@@ -11,7 +11,7 @@ else:
     
 setup(
     name = 'pydron_dataflow',
-    version = '0.1.4',
+    version = '0.2.0',
     description='Semi-automatic Python parallelization.',
     long_description=long_description,
     author='Stefan C. Mueller',
@@ -23,6 +23,6 @@ setup(
                         'frozendict>=0.4', 
                         'sortedcontainers>=0.9.5', 
                         'anycall>=0.2.3', 
-                        'remoot>=2.1.2',
+#                        'twisted_sshtools>=2.2.0',
                         'mock>=1.0.1'],
 )

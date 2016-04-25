@@ -4,7 +4,7 @@ import unittest
 from pydron_dataflow.backend import worker
 from twisted.internet import defer
 from twisted.internet.defer import CancelledError
-from remoot import smartstarter, pythonstarter
+from twisted_sshtools import smartstarter, pythonstarter
 import anycall
 import utwist
 from pydron_dataflow.dataflow import graph

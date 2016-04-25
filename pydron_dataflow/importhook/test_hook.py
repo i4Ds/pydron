@@ -8,7 +8,7 @@ import unittest
 import mock
 import hook
 from twisted.internet import defer, threads
-from remoot import pythonstarter, smartstarter
+from twisted_sshtools import pythonstarter, smartstarter
 import anycall
 from pydron_dataflow.backend import worker
 import utwist
