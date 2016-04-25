@@ -10,13 +10,13 @@ else:
     long_description = None
     
 setup(
-    name = 'pydron',
+    name = 'pydron_dataflow',
     version = '0.1.4',
     description='Semi-automatic Python parallelization.',
     long_description=long_description,
     author='Stefan C. Mueller',
     author_email='stefan.mueller@fhnw.ch',
-    url='https://github.com/smurn/pydron',
+    url='https://github.com/smurn/pydron_dataflow',
     packages = find_packages(),
     install_requires = ['astor>=0.4', 
                         'enum34>=1.0.4', 
