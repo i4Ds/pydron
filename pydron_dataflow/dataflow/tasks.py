@@ -40,3 +40,27 @@ class AbstractTask(object):
         return not self == other
     def __hash__(self):
         return 1
+
+
+class ConstTask(AbstractTask):
+    """
+    Evaluates to a constant value.
+    """
+
+    def __init__(self, value):
+        self.value = value
+
+    def input_ports(self):
+        return set()
+
+    def output_ports(self):
+        return {"value"}
+
+    def evaluate(self, inputs):
+        return {'value': self.value}
+
+    def __repr__(self):
+        return "ConstTask(" + repr(self.value) + ")"
+
+    def __eq__(self, other):
+        return self.value == other.value
