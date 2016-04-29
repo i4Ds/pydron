@@ -12,7 +12,7 @@ else:
 setup(
     name = 'pydron_dataflow',
     version = '0.2.0',
-    description='Semi-automatic Python parallelization.',
+    description='Dataflow framework to define and traverse directional graphs.',
     long_description=long_description,
     author='Ivo Nussbaumer',
     author_email='iuvo.nussbaumer@fhnw.ch',
