@@ -11,7 +11,7 @@ else:
     
 setup(
     name = 'pydron_dataflow',
-    version = '0.2.2',
+    version = '0.2.3',
     description='Dataflow framework to define and traverse directional graphs.',
     long_description=long_description,
     author='Ivo Nussbaumer',
@@ -21,6 +21,6 @@ setup(
     install_requires = ['astor>=0.4', 
                         'enum34>=1.0.4', 
                         'frozendict>=0.4',
-                        'twisted_sshtools>=2.2.2',
+                        'twisted_sshtools>=2.2.3',
                         'sortedcontainers>=0.9.5']
 )
