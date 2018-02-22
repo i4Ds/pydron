@@ -48,8 +48,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Pydron'
-copyright = u'2014, Stefan C. Mueller'
+project = 'Pydron'
+copyright = '2014, Stefan C. Mueller'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -194,8 +194,8 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'python.tex', u'Pydron Documentation',
-   u'Stefan C. Mueller', 'manual'),
+  ('index', 'python.tex', 'Pydron Documentation',
+   'Stefan C. Mueller', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -224,8 +224,8 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'python', u'Pydron Documentation',
-     [u'Stefan C. Mueller'], 1)
+    ('index', 'python', 'Pydron Documentation',
+     ['Stefan C. Mueller'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -238,8 +238,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'python', u'Pydron Documentation',
-   u'Stefan C. Mueller', 'python', '',
+  ('index', 'python', 'Pydron Documentation',
+   'Stefan C. Mueller', 'python', '',
    'Miscellaneous'),
 ]
 

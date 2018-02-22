@@ -53,6 +53,6 @@ def assert_graph_equal(expected, actual):
         else:
             msg = "No difference in string representation."
         
-        print repr(expected)
-        print repr(actual)
+        print(repr(expected))
+        print(repr(actual))
         raise AssertionError("Graphs differ: %s" % msg)

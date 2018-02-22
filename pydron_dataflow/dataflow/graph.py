@@ -1,6 +1,7 @@
 # Copyright (C) 2015 Stefan C. Mueller
 
 import threading
+import sys
 from frozendict import frozendict
 
 class Tick(object):
@@ -26,10 +27,16 @@ class Tick(object):
         if len(loopmask) != len(elements):
             raise ValueError("Loopmask does not match elements")
         for e in elements:
-            if not isinstance(e, (int, long)):
-                raise TypeError()
-            if e < 0:
-                raise ValueError("elements must be non-negative.")
+            if (sys.version_info > (3, 0)):
+                if not isinstance(e, int):
+                    raise TypeError()
+                if e < 0:
+                    raise ValueError("elements must be non-negative.")
+            else:
+                if not isinstance(e, (int, long)):
+                    raise TypeError()
+                if e < 0:
+                    raise ValueError("elements must be non-negative.")
         self._elements = elements
         self._loopmask = loopmask
     
@@ -83,7 +90,13 @@ class Tick(object):
     
     def __cmp__(self, other):
         return cmp(self._elements, other._elements)
-    
+
+    def __lt__(self, other):
+        return self._elements < other._elements
+
+    def __eq__(self, other):
+        return self._elements == other._elements
+
     def __hash__(self):
         return hash(self._elements)
     
@@ -97,6 +110,8 @@ class Tick(object):
             if length == 2:
                 return self._repr_element(1)
             else:
+                if (sys.version_info > (3, 0)):
+                    return "(" + ", ".join(map(self._repr_element, list(range(1, length)))) + ")"
                 return "(" + ", ".join(map(self._repr_element, range(1, length))) + ")"
 
     def _repr_element(self, index):
@@ -204,8 +219,12 @@ class _TaskNode(object):
         if self.task != other.task:
             return False
         
-        myproperties = {k:v for k,v in self.properties.iteritems() if not k.startswith("_")}
-        otherproperties = {k:v for k,v in other.properties.iteritems() if not k.startswith("_")}
+        if (sys.version_info > (3, 0)):
+            myproperties = {k:v for k,v in self.properties.items() if not k.startswith("_")}
+            otherproperties = {k:v for k,v in other.properties.items() if not k.startswith("_")}
+        else:
+            myproperties = {k:v for k,v in self.properties.iteritems() if not k.startswith("_")}
+            otherproperties = {k:v for k,v in other.properties.iteritems() if not k.startswith("_")}
         
         if myproperties != otherproperties:
             return False
@@ -395,9 +414,14 @@ class Graph(object):
         Returns the ticks of all tasks.
         """
         def gen():
-            for tick in self._ticks.iterkeys():
-                if tick != START_TICK and tick != FINAL_TICK:
-                    yield tick
+            if (sys.version_info > (3, 0)):
+                for tick in self._ticks.keys():
+                    if tick != START_TICK and tick != FINAL_TICK:
+                        yield tick
+            else:
+                for tick in self._ticks.iterkeys():
+                    if tick != START_TICK and tick != FINAL_TICK:
+                        yield tick
         return list(gen())
     
     def get_task(self, tick):
@@ -428,8 +452,12 @@ class Graph(object):
         """
         def gen():
             task = self._ticks[tick]
-            for _, conn in task.in_connections.iteritems():
-                yield (conn.source, conn.dest)
+            if (sys.version_info > (3, 0)):
+                for _, conn in task.in_connections.items():
+                    yield (conn.source, conn.dest)
+            else:
+                for _, conn in task.in_connections.iteritems():
+                    yield (conn.source, conn.dest)
         return list(gen())
                 
     def get_out_connections(self, tick):
@@ -487,19 +515,34 @@ class Graph(object):
             return "\n   ".join(lines)
             
         def gen_arguments():
-            for tick in sorted(self._ticks.iterkeys()):
-                if tick == START_TICK:
-                    continue
-                tasknode = self._ticks[tick]
-                for conn in tasknode.in_connections.itervalues():
-                    yield "%s.%s -> %s.%s" % (conn.source.tick, conn.source.port, conn.dest.tick, conn.dest.port)
-                
-                if tick == FINAL_TICK:
-                    continue
-                if tasknode.properties:
-                    yield repr(tick) + ": " + indent(repr(tasknode.task)) + " " + indent(repr(dict(tasknode.properties))) 
-                else:
-                    yield repr(tick) + ": " + indent(repr(tasknode.task))
+            if (sys.version_info > (3, 0)):
+                for tick in sorted(self._ticks.keys()):
+                    if tick == START_TICK:
+                        continue
+                    tasknode = self._ticks[tick]
+                    for conn in tasknode.in_connections.values():
+                        yield "%s.%s -> %s.%s" % (conn.source.tick, conn.source.port, conn.dest.tick, conn.dest.port)
+                    
+                    if tick == FINAL_TICK:
+                        continue
+                    if tasknode.properties:
+                        yield repr(tick) + ": " + indent(repr(tasknode.task)) + " " + indent(repr(dict(tasknode.properties))) 
+                    else:
+                        yield repr(tick) + ": " + indent(repr(tasknode.task))
+            else:
+                for tick in sorted(self._ticks.iterkeys()):
+                    if tick == START_TICK:
+                        continue
+                    tasknode = self._ticks[tick]
+                    for conn in tasknode.in_connections.itervalues():
+                        yield "%s.%s -> %s.%s" % (conn.source.tick, conn.source.port, conn.dest.tick, conn.dest.port)
+                    
+                    if tick == FINAL_TICK:
+                        continue
+                    if tasknode.properties:
+                        yield repr(tick) + ": " + indent(repr(tasknode.task)) + " " + indent(repr(dict(tasknode.properties))) 
+                    else:
+                        yield repr(tick) + ": " + indent(repr(tasknode.task))
         
         if len(self.get_all_ticks()) == 0 and len(self.get_in_connections(FINAL_TICK)) == 0:
             s = "{}"

@@ -44,7 +44,7 @@ class TestTick(unittest.TestCase):
         b = graph.Tick((0,2), (False, False))
         actual = a << b
         expected = graph.Tick((0,2,1), (False, False, False))
-        self.assertEquals(actual, expected)
+        self.assertEqual(actual, expected)
         
     def test_shift_keeps_order(self):
         a = graph.START_TICK
@@ -57,21 +57,21 @@ class TestTick(unittest.TestCase):
         
         actual = a << b
         expected = graph.Tick((0,10,5, 4), (False, True, False, True))
-        self.assertEquals(actual, expected)
+        self.assertEqual(actual, expected)
         
     def test_mark_loop_iteration(self):
         t = graph.Tick((0,10,5), (False, False, False))
         actual = t.mark_loop_iteration()
         expected = graph.Tick((0,10,5), (False, False, True))
-        self.assertEquals(actual, expected)
+        self.assertEqual(actual, expected)
         
     def test_non_loop_elements(self):
         t = graph.Tick((0,10,5,3), (False, True, False, True))
-        self.assertEquals((0,5), t.nonloop_elements)
+        self.assertEqual((0,5), t.nonloop_elements)
         
     def test_loop_elements(self):
         t = graph.Tick((0,10,5,3), (False, True, False, True))
-        self.assertEquals((10, 3), t.loop_elements)
+        self.assertEqual((10, 3), t.loop_elements)
         
     def test_repr_start(self):
         self.assertEqual("START_TICK", repr(graph.START_TICK))
@@ -109,12 +109,12 @@ class TestTick(unittest.TestCase):
     def test_parse_str(self):
         expected = graph.Tick((0,1,2,3), (False, False, False, False))
         actual = graph.Tick.parse_tick("1,2,3")
-        self.assertEquals(actual, expected)
+        self.assertEqual(actual, expected)
         
     def test_parse_str_loop(self):
         expected = graph.Tick((0,1,2,3), (False, False, True, False))
         actual = graph.Tick.parse_tick("1,*2,3")
-        self.assertEquals(actual, expected)
+        self.assertEqual(actual, expected)
         
     def assertEqual(self, first, second, msg=None):
         unittest.TestCase.assertEqual(self, first, second, msg=msg)
@@ -222,7 +222,7 @@ class TestGraph(unittest.TestCase):
     def test_get_task(self):
         task = object()
         self.target.add_task(START_TICK + 100, task)
-        self.assertEquals(task, self.target.get_task(START_TICK + 100))
+        self.assertEqual(task, self.target.get_task(START_TICK + 100))
         
     def test_mocking(self):
         self.target.add_task(START_TICK + 100, "task1", {'nicename':'test1'})
@@ -241,13 +241,13 @@ class TestGraph(unittest.TestCase):
     def test_observer_add_task(self):
         self.target.subscribe(self.observer)
         self.target.add_task(START_TICK + 100, "task1", {'nicename':'test1'})
-        self.assertEquals([("task_added", START_TICK + 100, "task1", {'nicename':'test1'})], self.observer.calls)
+        self.assertEqual([("task_added", START_TICK + 100, "task1", {'nicename':'test1'})], self.observer.calls)
         
     def test_observer_remove_task(self):
         self.target.add_task(START_TICK + 100, "task1")
         self.target.subscribe(self.observer)
         self.target.remove_task(START_TICK + 100)
-        self.assertEquals([("task_removed", START_TICK + 100)], self.observer.calls)
+        self.assertEqual([("task_removed", START_TICK + 100)], self.observer.calls)
         
     def test_observer_connect(self):
         self.target.add_task(START_TICK + 100, "task1")
@@ -255,7 +255,7 @@ class TestGraph(unittest.TestCase):
         self.target.subscribe(self.observer)
         self.target.connect(graph.Endpoint(START_TICK + 100, 'out'), 
                             graph.Endpoint(START_TICK + 101, 'in'))
-        self.assertEquals([("connected", graph.Endpoint(START_TICK + 100, 'out'), 
+        self.assertEqual([("connected", graph.Endpoint(START_TICK + 100, 'out'), 
                             graph.Endpoint(START_TICK + 101, 'in'))], self.observer.calls)
         
     def test_observer_disconnect(self):
@@ -267,14 +267,14 @@ class TestGraph(unittest.TestCase):
         self.target.subscribe(self.observer)
         self.target.disconnect(graph.Endpoint(START_TICK + 100, 'out'), 
                             graph.Endpoint(START_TICK + 101, 'in'))
-        self.assertEquals([("disconnected", graph.Endpoint(START_TICK + 100, 'out'), 
+        self.assertEqual([("disconnected", graph.Endpoint(START_TICK + 100, 'out'), 
                             graph.Endpoint(START_TICK + 101, 'in'))], self.observer.calls)
         
     def test_observer_set_task_property(self):
         self.target.add_task(START_TICK + 100, "task1")
         self.target.subscribe(self.observer)
         self.target.set_task_property(START_TICK + 100, "foo", "bar")
-        self.assertEquals([("task_property_changed", START_TICK + 100, "foo", "bar")], self.observer.calls)
+        self.assertEqual([("task_property_changed", START_TICK + 100, "foo", "bar")], self.observer.calls)
         
 class MockObserver(object):
     

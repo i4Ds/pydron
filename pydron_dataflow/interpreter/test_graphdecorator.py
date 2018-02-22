@@ -223,27 +223,27 @@ class TestRefineDecorator(unittest.TestCase):
         
     def test_add_task_disconnected(self):
         self.target.add_task(TICK1, MockTask("in"))
-        self.assertEquals(set(), self.target.collect_refine_tasks())
+        self.assertEqual(set(), self.target.collect_refine_tasks())
         
     def test_connect_no_data(self):
         self.target.add_task(TICK1, "task1")
         self.target.add_task(TICK2, MockTask("in"))
         self.target.connect(graph.Endpoint(TICK1, "out"), graph.Endpoint(TICK2, "in"))
-        self.assertEquals(set(), self.target.collect_refine_tasks())
+        self.assertEqual(set(), self.target.collect_refine_tasks())
         
     def test_set_data_after_connect(self):
         self.target.add_task(TICK1, "task1")
         self.target.add_task(TICK2, MockTask("in"))
         self.target.connect(graph.Endpoint(TICK1, "out"), graph.Endpoint(TICK2, "in"))
         self.target.set_output_data(TICK1, {"out": "data"})
-        self.assertEquals({TICK2}, self.target.collect_refine_tasks())
+        self.assertEqual({TICK2}, self.target.collect_refine_tasks())
         
     def test_set_data_before_connect(self):
         self.target.add_task(TICK1, "task1")
         self.target.add_task(TICK2, MockTask("in"))
         self.target.set_output_data(TICK1, {"out": "data"})
         self.target.connect(graph.Endpoint(TICK1, "out"), graph.Endpoint(TICK2, "in"))
-        self.assertEquals({TICK2}, self.target.collect_refine_tasks())
+        self.assertEqual({TICK2}, self.target.collect_refine_tasks())
         
     def test_disconnect(self):
         self.target.add_task(TICK1, "task1")
@@ -251,7 +251,7 @@ class TestRefineDecorator(unittest.TestCase):
         self.target.set_output_data(TICK1, {"out": "data"})
         self.target.connect(graph.Endpoint(TICK1, "out"), graph.Endpoint(TICK2, "in"))
         self.target.disconnect(graph.Endpoint(TICK1, "out"), graph.Endpoint(TICK2, "in"))
-        self.assertEquals(set(), self.target.collect_refine_tasks())
+        self.assertEqual(set(), self.target.collect_refine_tasks())
         
     def test_disconnect_two(self):
         self.target.add_task(TICK1, "task1")
@@ -260,7 +260,7 @@ class TestRefineDecorator(unittest.TestCase):
         self.target.connect(graph.Endpoint(TICK1, "out"), graph.Endpoint(TICK2, "in1"))
         self.target.connect(graph.Endpoint(TICK1, "out"), graph.Endpoint(TICK2, "in2"))
         self.target.disconnect(graph.Endpoint(TICK1, "out"), graph.Endpoint(TICK2, "in1"))
-        self.assertEquals({TICK2}, self.target.collect_refine_tasks())
+        self.assertEqual({TICK2}, self.target.collect_refine_tasks())
 
     def test_was_collected_inqueue(self):
         self.target.add_task(TICK1, "task")

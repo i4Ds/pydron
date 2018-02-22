@@ -71,7 +71,7 @@ def replace_task(g, tick, subgraph, subgraph_tick=None, additional_inputs={}):
             # Just pass it through.
             source = task_input_map[source.port]
         else:
-            raise ValueError("No input on the replaced task for output %s" % `source.port`)
+            raise ValueError("No input on the replaced task for output %s" % repr(source.port))
         output_connections.append((source, dest))
     
     # Remove the task

@@ -1,5 +1,6 @@
 # Copyright (C) 2015 Stefan C. Mueller
 
+import sys
 from sortedcontainers import SortedSet
 from pydron_dataflow.dataflow import graph
 
@@ -74,11 +75,16 @@ class DataGraphDecorator(AbstractGraphDecorator):
         :param outputs: Dict with out-port to value-reference map. 
         """
         props = self.g.get_task_properties(tick)
-
-        for port, data in outputs.iteritems():
-            if port in props["out_data"]:
-                raise ValueError("Value of out-port %s is already set." % port)
-            props["out_data"][port] = data
+        if (sys.version_info > (3, 0)):
+            for port, data in outputs.items():
+                if port in props["out_data"]:
+                    raise ValueError("Value of out-port %s is already set." % port)
+                props["out_data"][port] = data
+        else:
+            for port, data in outputs.iteritems():
+                if port in props["out_data"]:
+                    raise ValueError("Value of out-port %s is already set." % port)
+                props["out_data"][port] = data
             
     def get_data(self, out_endpoint):
         """
